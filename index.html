@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>
+            Chomprueba
+        </title>
+    </head>
+
+    <body>
+
+<p id="textoDinamico"></p>
+<div>
+    <h5>Chompy</h5>
+    <button class="boton">Dale aqui</button>
+</div>
+
+<div>
+    <h5>Trejus</h5>
+    <button class="boton">Dale aqui</button>
+</div>
+
+<script>
+    // Store the document.cookie pairs in a variable
+    var galletaSalvaje = document.cookie;
+
+    // Generate a list with every HTML element that has de class boton
+    var botones = document.querySelectorAll(".boton");
+
+    // Access the dynamic content with a variable
+    var textoDinamico = document.querySelector("#textoDinamico");
+
+    // Add a clickListener to EVERY element in your "querySelectorAll" List
+    for (i = 0; i < botones.length; i++) {
+        botones[i].addEventListener('click', function(i) {
+
+            var date = new Date();                                // Get current date
+            date.setTime(date.getTime() + (30 * 1000));           // Add 30 seconds to the current time of the click
+            var expiration = "; expires=" + date.toGMTString();   // Variable with the expiration date (it will be concatenated to the cookie)
+
+            // Add a pair to the cookie settings, in this case username=username from a sibling html element 
+            // (and also concatenates the variable to make it expire in 30 seconds)
+            document.cookie = "username=" + this.previousElementSibling.textContent + expiration + "; path=/";
+
+            // Update the cookie variable's value
+            galletaSalvaje = document.cookie;
+
+            // Reload page
+            location.reload();
+        });
+    }
+
+    window.onload = function() {
+        // Change the dynamic content if the cookie has a value
+        if(galletaSalvaje !== undefined) {
+
+            // Split del signo "=" en la cookie para generar un arreglo y luego darle pop para quedarte con el último elemento
+            galletaSalvaje = galletaSalvaje.split("=").pop();
+
+            // Change the dynamic content
+            textoDinamico.textContent = galletaSalvaje;
+        }
+    }
+</script>
+    </body>
+</html>
